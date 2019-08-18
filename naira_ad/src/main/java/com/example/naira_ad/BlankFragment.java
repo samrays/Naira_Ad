@@ -43,15 +43,16 @@ public class BlankFragment extends Fragment {
     }
 
     public void showAds(View v){
+
+        mDialog = new Dialog(getContext());
+        TextView txtclose;
+        mDialog.setContentView(R.layout.naira_popup);
+        mImageView = mDialog.findViewById(R.id.imageView2);
         Picasso.get()
                 .load("https://ads.adnaira.ng/assets/ads/ads-by-adnaira.png")
                 .fit()
                 .centerCrop()
                 .into(mImageView);
-        mDialog = new Dialog(getContext());
-        TextView txtclose;
-        mDialog.setContentView(R.layout.naira_popup);
-        mImageView = mDialog.findViewById(R.id.imageView2);
         txtclose =(TextView) mDialog.findViewById(R.id.txtclose);
 
         txtclose.setOnClickListener(new View.OnClickListener() {
