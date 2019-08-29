@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -38,22 +51,63 @@ public class BlankFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private ImageView mImageView;
+    private ImageView mImageView2;
+    private String mId = "1475514552";
+    private String mIp;
+    private String mPhoto;
+    private String mTargetUrl;
+    private String mDescription;
 
     public BlankFragment() {
         // Required empty public constructor
     }
 
     public void showAds(View v){
+        mIp = getIPAddress();
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://ads.adnaira.ng/mobile-ads/")
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.build();
+
+        Naira_add_Server client = retrofit.create(Naira_add_Server.class);
+        Call<List<AddInfo>> call = client.getAddInfo(mId,mIp);
+        call.enqueue(new Callback<List<AddInfo>>() {
+            @Override
+            public void onResponse(Call<List<AddInfo>> call, Response<List<AddInfo>> response) {
+
+                List<AddInfo> addInfos = response.body();
+                for (AddInfo addInfo:addInfos){
+                    mPhoto = addInfo.getPhoto();
+                    mDescription = addInfo.getDescription();
+                    mTargetUrl = addInfo.getTarget_url();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AddInfo>> call, Throwable t) {
+                Log.d("Sample","This did't work");
+            }
+        });
+
+
 
         mDialog = new Dialog(getContext());
         TextView txtclose;
         mDialog.setContentView(R.layout.naira_popup);
+        mImageView2 = mDialog.findViewById(R.id.image_id);
         mImageView = mDialog.findViewById(R.id.imageView2);
         Picasso.get()
                 .load("https://ads.adnaira.ng/assets/ads/ads-by-adnaira.png")
                 .fit()
                 .centerCrop()
                 .into(mImageView);
+        Picasso.get()
+                .load(mPhoto)
+                .fit()
+                .centerCrop()
+                .into(mImageView2);
         txtclose =(TextView) mDialog.findViewById(R.id.txtclose);
 
         txtclose.setOnClickListener(new View.OnClickListener() {
@@ -76,8 +130,44 @@ public class BlankFragment extends Fragment {
             }
         });
 
+        mImageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse(mTargetUrl));
+                startActivity(intent);
+            }
+        });
 
 
+
+    }
+    public String getIPAddress()
+    {
+        try
+        {
+            //Enumerate all the network interfaces
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
+                 en.hasMoreElements();)
+            {
+                NetworkInterface intf = en.nextElement();
+                // Make a loop on the number of IP addresses related to each Network Interface
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
+                {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+
+                    if (!inetAddress.isLoopbackAddress())
+                        return inetAddress.getHostAddress();
+                }
+            }
+        }
+        catch (SocketException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
