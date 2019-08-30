@@ -68,7 +68,7 @@ public class BlankFragment extends Fragment {
         mIp = getIPAddress();
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://ads.adnaira.ng/mobile-ads/")
+                .baseUrl("https://ads.adnaira.ng/")
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
@@ -85,29 +85,6 @@ public class BlankFragment extends Fragment {
                     mDescription = addInfo.getDescription();
                     mTargetUrl = addInfo.getTarget_url();
                 }
-
-                Picasso.get()
-                        .load("https://ads.adnaira.ng/assets/ads/ads-by-adnaira.png")
-                        .fit()
-                        .centerCrop()
-                        .into(mImageView);
-                Picasso.get()
-                        .load(mPhoto)
-                        .fit()
-                        .centerCrop()
-                        .into(mImageView2);
-
-                mImageView2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                        intent.setData(Uri.parse(mTargetUrl));
-                        startActivity(intent);
-                    }
-                });
-
             }
 
             @Override
@@ -123,7 +100,16 @@ public class BlankFragment extends Fragment {
         mDialog.setContentView(R.layout.naira_popup);
         mImageView2 = mDialog.findViewById(R.id.image_id);
         mImageView = mDialog.findViewById(R.id.imageView2);
-
+        Picasso.get()
+                .load("https://ads.adnaira.ng/assets/ads/ads-by-adnaira.png")
+                .fit()
+                .centerCrop()
+                .into(mImageView);
+        Picasso.get()
+                .load(mPhoto)
+                .fit()
+                .centerCrop()
+                .into(mImageView2);
         txtclose =(TextView) mDialog.findViewById(R.id.txtclose);
         tv = mDialog.findViewById(R.id.tv2_id);
         tv.setText(mDescription);
@@ -148,16 +134,16 @@ public class BlankFragment extends Fragment {
             }
         });
 
-//        mImageView2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setAction(Intent.ACTION_VIEW);
-//                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-//                intent.setData(Uri.parse(mTargetUrl));
-//                startActivity(intent);
-//            }
-//        });
+        mImageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse(mTargetUrl));
+                startActivity(intent);
+            }
+        });
 
 
 
