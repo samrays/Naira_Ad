@@ -8,5 +8,5 @@ import retrofit2.http.Path;
 
 public interface Naira_add_Server {
     @GET("/users/{id}/{ip}")
-    Call<List<AddInfo>> getAddInfo(@Path("id") String id, @Path("repos") String ip);
+    Call<List<AddInfo>> getAddInfo(@Path("id") String id, @Path("ip") String ip);
 }

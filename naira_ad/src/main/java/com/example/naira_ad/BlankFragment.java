@@ -52,7 +52,7 @@ public class BlankFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ImageView mImageView;
     private ImageView mImageView2;
-    private String mId = "1475514552";
+    private String mId;
     private String mIp;
     private String mPhoto;
     private String mTargetUrl;
@@ -62,7 +62,8 @@ public class BlankFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void showAds(View v){
+    public void showAds(View v, String token){
+        mId = token;
         mIp = getIPAddress();
 
         Retrofit.Builder builder = new Retrofit.Builder()
