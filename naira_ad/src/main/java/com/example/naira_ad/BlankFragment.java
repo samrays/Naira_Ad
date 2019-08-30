@@ -57,6 +57,7 @@ public class BlankFragment extends Fragment {
     private String mPhoto;
     private String mTargetUrl;
     private String mDescription;
+    private TextView tv;
 
     public BlankFragment() {
         // Required empty public constructor
@@ -110,6 +111,8 @@ public class BlankFragment extends Fragment {
                 .centerCrop()
                 .into(mImageView2);
         txtclose =(TextView) mDialog.findViewById(R.id.txtclose);
+        tv = mDialog.findViewById(R.id.tv2_id);
+        tv.setText(mDescription);
 
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override

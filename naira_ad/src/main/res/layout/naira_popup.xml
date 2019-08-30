@@ -67,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-            android:text="We love advertising"
             android:textColor="#ffffff"
             android:textSize="18sp" />
     </LinearLayout>
