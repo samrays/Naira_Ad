@@ -52,7 +52,7 @@ public class BlankFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ImageView mImageView;
     private ImageView mImageView2;
-    private String mId;
+    private int mId;
     private String mIp;
     private String mPhoto;
     private String mTargetUrl;
@@ -63,7 +63,7 @@ public class BlankFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void showAds(View v, String token){
+    public void showAds(View v, int token){
         mId = token;
         mIp = getIPAddress();
 
@@ -85,6 +85,7 @@ public class BlankFragment extends Fragment {
                     mDescription = addInfo.getDescription();
                     mTargetUrl = addInfo.getTarget_url();
                 }
+                Log.d("Sample","worked");
             }
 
             @Override
