@@ -52,7 +52,7 @@ public class BlankFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ImageView mImageView;
     private ImageView mImageView2;
-    private int mId;
+    private String mId;
     private String mIp;
     private String mPhoto;
     private String mTargetUrl;
@@ -63,18 +63,18 @@ public class BlankFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void showAds(View v, int token){
+    public void showAds(View v, String token){
         mId = token;
         mIp = getIPAddress();
-
+        Log.d("Sample",mIp);
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://ads.adnaira.ng/")
+                .baseUrl("https://ads.adnaira.ng/mobile-ads/"+mId+"/"+mIp)
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
 
         Naira_add_Server client = retrofit.create(Naira_add_Server.class);
-        Call<List<AddInfo>> call = client.getAddInfo(mId,mIp);
+        Call<List<AddInfo>> call = client.getAddInfo();
         call.enqueue(new Callback<List<AddInfo>>() {
             @Override
             public void onResponse(Call<List<AddInfo>> call, Response<List<AddInfo>> response) {
