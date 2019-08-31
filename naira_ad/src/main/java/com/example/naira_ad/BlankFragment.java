@@ -68,7 +68,7 @@ public class BlankFragment extends Fragment {
         mIp = getIPAddress();
         Log.d("Sample",mIp);
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://ads.adnaira.ng/mobile-ads/"+mId+"/"+mIp)
+                .baseUrl("https://ads.adnaira.ng/mobile-ads/"+mId+"/"+"41.217.18.54")
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
