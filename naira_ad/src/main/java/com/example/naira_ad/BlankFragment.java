@@ -63,12 +63,12 @@ public class BlankFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void showAds(View v, String token){
-        mId = token;
+    public void showAds(View v){
+        //mId = token;
         mIp = getIPAddress();
         Log.d("Sample",mIp);
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://ads.adnaira.ng/mobile-ads/"+mId+"/"+"41.217.18.54")
+                .baseUrl("https://ads.adnaira.ng/")
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();

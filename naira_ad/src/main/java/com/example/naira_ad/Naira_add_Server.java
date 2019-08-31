@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface Naira_add_Server {
-    @GET()
+    @GET("mobile-ads/1258755/41.217.18.54")
     Call<List<AddInfo>> getAddInfo();
 }
