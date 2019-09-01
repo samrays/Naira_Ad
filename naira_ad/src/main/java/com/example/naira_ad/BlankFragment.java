@@ -40,12 +40,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class BlankFragment extends Fragment {
     Dialog mDialog;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
@@ -66,54 +65,69 @@ public class BlankFragment extends Fragment {
     public void showAds(View v){
         //mId = token;
         mIp = getIPAddress();
-        Log.d("Sample",mIp);
+
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://ads.adnaira.ng/mobile-ads/1258755/41.217.18.54")
+                .baseUrl("https://ads.adnaira.ng/mobile-ads/")
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
 
         Naira_add_Server client = retrofit.create(Naira_add_Server.class);
-        Call<List<AddInfo>> call = client.getAddInfo();
-        call.enqueue(new Callback<List<AddInfo>>() {
-            @Override
-            public void onResponse(Call<List<AddInfo>> call, Response<List<AddInfo>> response) {
+        Call<AddInfo> call = client.getAddInfo("1205475","191.168.1.25");
+       call.enqueue(new Callback<AddInfo>() {
+           @Override
+           public void onResponse(Call<AddInfo> call, Response<AddInfo> response) {
+               Log.d("Sample", response.code()+ "this worked");
+               AddInfo addInfo = response.body();
+               mPhoto = addInfo.getPhoto();
+               mTargetUrl = addInfo.getTarget_url();
+               mDescription = addInfo.getDescription();
+               mImageView2 = mDialog.findViewById(R.id.image_id);
+               tv = mDialog.findViewById(R.id.tv2_id);
+               tv.setText(mDescription);
 
-                List<AddInfo> addInfos = response.body();
-                for (AddInfo addInfo:addInfos){
-                    mPhoto = addInfo.getPhoto();
-                    mDescription = addInfo.getDescription();
-                    mTargetUrl = addInfo.getTarget_url();
-                }
-                Log.d("Sample","worked");
-            }
+               Picasso.get()
+                       .load(mPhoto)
+                       .fit()
+                       .centerCrop()
+                       .into(mImageView2);
+               mImageView2.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       Intent intent = new Intent();
+                       intent.setAction(Intent.ACTION_VIEW);
+                       intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                       intent.setData(Uri.parse(mTargetUrl));
+                       startActivity(intent);
+                   }
+               });
 
-            @Override
-            public void onFailure(Call<List<AddInfo>> call, Throwable t) {
-                Log.d("Sample","This did't work");
-            }
-        });
+
+           }
+
+           @Override
+           public void onFailure(Call<AddInfo> call, Throwable t) {
+               Log.d("Sample",  "This didn't work");
+
+           }
+       });
 
 
 
         mDialog = new Dialog(getContext());
         TextView txtclose;
         mDialog.setContentView(R.layout.naira_popup);
-        mImageView2 = mDialog.findViewById(R.id.image_id);
+
         mImageView = mDialog.findViewById(R.id.imageView2);
         Picasso.get()
                 .load("https://ads.adnaira.ng/assets/ads/ads-by-adnaira.png")
                 .fit()
                 .centerCrop()
                 .into(mImageView);
-        Picasso.get()
-                .load(mPhoto)
-                .fit()
-                .centerCrop()
-                .into(mImageView2);
+
         txtclose =(TextView) mDialog.findViewById(R.id.txtclose);
-        tv = mDialog.findViewById(R.id.tv2_id);
-        tv.setText(mDescription);
+
+
 
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,17 +149,8 @@ public class BlankFragment extends Fragment {
             }
         });
 
-        mImageView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse(mTargetUrl));
-                startActivity(intent);
-            }
-        });
 
+        Log.d("Sample",mIp);
 
 
     }
