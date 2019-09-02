@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,7 @@ public class BlankFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void showAds(View v){
+    public void showAds(View v, String token){
         //mId = token;
         mIp = getIPAddress();
 
@@ -73,7 +74,7 @@ public class BlankFragment extends Fragment {
         Retrofit retrofit = builder.build();
 
         Naira_add_Server client = retrofit.create(Naira_add_Server.class);
-        Call<AddInfo> call = client.getAddInfo("1205475","191.168.1.25");
+        Call<AddInfo> call = client.getAddInfo(token,getIPAddress());
        call.enqueue(new Callback<AddInfo>() {
            @Override
            public void onResponse(Call<AddInfo> call, Response<AddInfo> response) {
@@ -101,6 +102,7 @@ public class BlankFragment extends Fragment {
                        startActivity(intent);
                    }
                });
+               Log.d("Sample", getIPAddress());
 
 
            }
@@ -150,7 +152,7 @@ public class BlankFragment extends Fragment {
         });
 
 
-        Log.d("Sample",mIp);
+
 
 
     }
@@ -169,7 +171,7 @@ public class BlankFragment extends Fragment {
                     InetAddress inetAddress = enumIpAddr.nextElement();
 
                     if (!inetAddress.isLoopbackAddress())
-                        return inetAddress.getHostAddress();
+                        return Formatter.formatIpAddress(inetAddress.hashCode());
                 }
             }
         }
