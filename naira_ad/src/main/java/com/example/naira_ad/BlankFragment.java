@@ -156,27 +156,22 @@ public class BlankFragment extends Fragment {
 
 
     }
-    public String getIPAddress()
-    {
-        try
-        {
-            //Enumerate all the network interfaces
+    public String getIPAddress() {
+        try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
-                 en.hasMoreElements();)
-            {
-                NetworkInterface intf = en.nextElement();
-                // Make a loop on the number of IP addresses related to each Network Interface
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
-                {
+                 en.hasMoreElements(); ) {
+                NetworkInterface networkinterface = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = networkinterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-
+                    //Check if the IP address is not a loopback address, in that case it is
+                    //the IP address of your mobile device
                     if (!inetAddress.isLoopbackAddress())
                         return Formatter.formatIpAddress(inetAddress.hashCode());
+
+
                 }
             }
-        }
-        catch (SocketException e)
-        {
+        } catch (SocketException e) {
             e.printStackTrace();
         }
         return null;
